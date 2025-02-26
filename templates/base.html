@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+  {% block filter %}
+    {% load static %}
+  {% endblock %}
+<html lang="{{ request.LANGUAGE_CODE }}">
+  <head>
+    <!-- заголовок -->
+    <title>
+      {% block title %}
+        Главная страница
+      {% endblock %}
+    </title>
+      <!-- Подключаем статику и дополнительные стили -->
+      {% include 'includes/head.html' %}
+      <!-- js scripts -->
+      {% block head_js %}
+      {% endblock %}
+  </head>
+
+  {% block body %}
+  <body>
+    <div id="wrapper">
+      <!-- меню -->
+        {% block menu %}
+          {% include 'includes/menu.html' %}
+        {% endblock %}
+
+      <div id="page-wrapper" class="gray-bg {% if not user.is_authenticated %}w-100{% endif %}">
+        <!-- header -->
+          {% block header %}
+            {% include 'includes/header.html' %}
+          {% endblock %}
+        <!-- навигация -->
+        {% block navi %}
+        {% endblock %}
+
+        <!-- основные данные -->
+        <div class="wrapper wrapper-content">
+          {% block content %}
+            Контент не подвезли :(
+          {% endblock %}
+        </div>
+        <!-- footer -->
+        {% include 'includes/footer.html' %}
+      </div>
+    </div>
+    <!-- js scripts -->
+    {% block footer_js %}
+    {% endblock %}
+  </body>
+  {% endblock %}
+</html>

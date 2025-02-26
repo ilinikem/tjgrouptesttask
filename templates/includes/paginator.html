@@ -1,0 +1,69 @@
+<nav class="mt-3">
+  <ul class="pagination justify-content-end mb-0" style="margin-right: 71px;">
+    {% if obj.has_previous %}
+      <li class="page-item">
+        <a class="page-link" href="?page=1" aria-label="Previous">
+          <span aria-hidden="true">В начало</span>
+        </a>
+      </li>
+    {% endif %}
+    {% if obj.paginator.num_pages > 1 %}
+      <!-- Прибавляем к номеру текущей страницы -4 (т.е. отнимаем 4) -->
+      {% if obj.number|add:'-3' > 0 %}
+      <!-- Если до текущей страницы есть больше 4 страниц, показываем многоточие -->
+      <li class="page-item">
+        <span class="px-2" style="padding: 6px;">...</span>
+      </li>
+      {% endif %}
+      {% if obj.number|add:'-2' > 0 %}
+        <!-- Если до текущей страницы есть ещё две страницы -->
+        <li class="page-item">
+          <a class="page-link" href="?page={{ obj.number|add:'-2' }}">
+            {{ obj.number|add:'-2' }}
+          </a>
+        </li>
+      {% endif %}
+      {% if obj.number|add:'-1' > 0 %}
+        <!-- Если до текущей страницы есть ещё одна страница -->
+        <li class="page-item">
+          <a class="page-link" href="?page={{ obj.number|add:'-1' }}">
+            {{ obj.number|add:'-1' }}
+          </a>
+        </li>
+      {% endif %}
+      <!-- Номер текущей страницы -->
+      <li class="page-item active">
+        <span class="page-link">{{ obj.number }}</span>
+      </li>
+      {% if obj.number|add:'1' <= obj.paginator.num_pages %}
+        <!-- Если после текущей страницы есть ещё одна страница -->
+        <li class="page-item">
+          <a class="page-link" href="?page={{ obj.number|add:'1' }}">
+            {{ obj.number|add:'1' }}
+          </a>
+        </li>
+      {% endif %}
+      {% if obj.number|add:'2' <= obj.paginator.num_pages %}
+        <!-- Если после текущей страницы есть ещё две страницы -->
+        <li class="page-item">
+          <a class="page-link" href="?page={{ obj.number|add:'2' }}">
+            {{ obj.number|add:'2' }}
+          </a>
+        </li>
+      {% endif %}
+      {% if obj.number|add:'3' <= obj.paginator.num_pages %}
+      <!-- Если после текущей страницы есть ещё четыре страницы -->
+      <li class="page-item">
+        <span class="px-2" style="padding: 6px;">...</span>
+      </li>
+      {% endif %}
+    {% endif %}
+    {% if obj.has_next %}
+      <li class="page-item">
+        <a class="page-link" href="?page={{ obj.paginator.num_pages }}" aria-label="Next">
+          <span aria-hidden="true">В конец</span>
+        </a>
+      </li>
+    {% endif %}
+  </ul>
+</nav>

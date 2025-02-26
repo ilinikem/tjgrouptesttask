@@ -1,0 +1,45 @@
+{% block filter %}
+    {% load static %}
+{% endblock %}
+
+<nav class="navbar-default navbar-static-side" role="navigation">
+  <div class="sidebar-collapse">
+    {% with request.resolver_match.view_name as view_name %}
+      <ul class="nav metismenu" id="side-menu">
+        <li class="nav-header">
+          <div class="logo-element"> TLG </div>
+        </li>
+        <li class="{% if 'employees:department_tree' in view_name %}active{% endif %}">
+          <a href="{% url 'employees:department_tree' %}">
+            <i class="fa fa-check-square-o"></i>
+            <span class="nav-label">Главная</span>
+          </a>
+        </li>
+      </ul>
+    {% endwith %}
+  </div>
+</nav>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const observer = new MutationObserver(mutations => {
+      for(let mutation of mutations) {
+        if (mutation.attributeName === "aria-expanded") {
+          const isExpanded = mutation.target.getAttribute('aria-expanded') === 'true';
+          const iconContainer = mutation.target.querySelector('#icon-container');
+          const icon = iconContainer.querySelector('.fa-exclamation');
+          if (isExpanded && icon) {
+              icon.style.display = 'none';
+          }
+          else if (!isExpanded && icon) {
+              icon.style.display = 'inline';
+          }
+        }
+    }
+    });
+    const elem = document.getElementById('myDropdown');
+    if (elem && elem.nodeType === Node.ELEMENT_NODE) { // Проверка наличия элемента и его типа
+      observer.observe(elem, { attributes: true });
+    }
+  });
+</script>

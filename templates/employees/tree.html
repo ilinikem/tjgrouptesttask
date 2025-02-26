@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% block title %}Дерево подразделений{% endblock %}
+{% block navi %}{% endblock %}
+{% block filter %}
+  {% load static %}
+{% endblock %}
+{% block content %}
+  <div class="container mt-4">
+    <h1 class="mb-4">Дерево подразделений</h1>
+    <ul class="list-group">
+      {% for department in departments_paginator_list %}
+        <li class="list-group-item">
+          <span class="department-toggle" style="cursor: pointer;">➕</span>
+          <strong>{{ department.name }}</strong>
+
+          <div class="employees-table mt-2" style="display: none;">
+            <table class="table table-bordered table-striped">
+              <thead class="thead-dark">
+                <tr>
+                  <th>#</th>
+                  <th>ФИО</th>
+                  <th>Должность</th>
+                  <th>Дата приема</th>
+                  <th>Зарплата</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for employee in department.employees.all %}
+                  <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{ employee.full_name }}</td>
+                    <td>{{ employee.position }}</td>
+                    <td>{{ employee.hire_date }}</td>
+                    <td>{{ employee.salary }} ₽</td>
+                  </tr>
+                {% empty %}
+                  <tr>
+                    <td colspan="5" class="text-center text-muted">Нет сотрудников</td>
+                  </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </li>
+      {% endfor %}
+    </ul>
+
+    {% include 'includes/paginator.html' with obj=departments_paginator_list %}
+  </div>
+
+  <script>
+    document.querySelectorAll(".department-toggle").forEach(toggle => {
+      toggle.addEventListener("click", () => {
+        let table = toggle.parentElement.querySelector(".employees-table");
+        if (table.style.display === "none") {
+          table.style.display = "block";
+          toggle.textContent = "➖";
+        } else {
+          table.style.display = "none";
+          toggle.textContent = "➕";
+        }
+      });
+    });
+  </script>
+{% endblock %}
