@@ -1,0 +1,41 @@
+<li class="list-group-item">
+  <span class="department-toggle" style="cursor: pointer;">➕</span>
+  <strong>{{ item.department.name }}</strong>
+
+  <div class="employees-table mt-2" style="display: none;">
+    <table class="table table-bordered table-striped">
+      <thead class="thead-dark">
+        <tr>
+          <th>#</th>
+          <th>ФИО</th>
+          <th>Должность</th>
+          <th>Дата приема</th>
+          <th>Зарплата</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for employee in item.department.employees.all %}
+          <tr>
+            <td>{{ forloop.counter }}</td>
+            <td>{{ employee.full_name }}</td>
+            <td>{{ employee.position }}</td>
+            <td>{{ employee.hire_date }}</td>
+            <td>{{ employee.salary }} ₽</td>
+          </tr>
+        {% empty %}
+          <tr>
+            <td colspan="5" class="text-center text-muted">Нет сотрудников</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  {% if item.children %}
+    <ul class="subdepartments list-group ml-3" style="display: none;">
+      {% for child in item.children %}
+        {% include "employees/department_item.html" with item=child %}
+      {% endfor %}
+    </ul>
+  {% endif %}
+</li>

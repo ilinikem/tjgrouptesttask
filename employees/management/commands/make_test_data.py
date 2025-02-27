@@ -1,7 +1,9 @@
 import random
 from datetime import date, timedelta
+
 from django.core.management.base import BaseCommand
-from employees.models import Employee, Department
+
+from employees.models import Department, Employee
 
 
 class Command(BaseCommand):

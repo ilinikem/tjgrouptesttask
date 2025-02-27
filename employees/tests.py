@@ -1,8 +1,10 @@
-from django.core.exceptions import ValidationError
-from django.test import TestCase, Client
-from django.urls import reverse
-from employees.models import Department, Employee
 from datetime import date
+
+from django.core.exceptions import ValidationError
+from django.test import Client, TestCase
+from django.urls import reverse
+
+from employees.models import Department, Employee
 
 
 class DepartmentTestCase(TestCase):

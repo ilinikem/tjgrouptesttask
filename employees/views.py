@@ -1,20 +1,30 @@
-from django.shortcuts import render
-from .models import Department
 from django.core.paginator import Paginator
+from django.shortcuts import render
+
+from .models import Department
+
+
+def build_department_tree(departments, parent=None):
+    """Рекурсивно строим дерево подразделений."""
+    tree = []
+    for department in departments:
+        if department.parent == parent:
+            children = build_department_tree(departments, department)
+            tree.append({"department": department, "children": children})
+    return tree
 
 
 def department_tree(request):
-    """Выводим все подразделения и работников."""
-    departments_paginator = Department.objects.prefetch_related(
-        "employees").all()
+    """Выводим дерево подразделений и работников."""
+    all_departments = Department.objects.prefetch_related("employees").all()
+    department_tree_structure = build_department_tree(all_departments)
 
-    # Добавим пагинатор
-    paginator = Paginator(departments_paginator, 2)
-
-    # Получим текущую страницу из GET-параметров
-    page_number = request.GET.get('page')
+    paginator = Paginator(department_tree_structure, 5)
+    page_number = request.GET.get("page")
     departments_paginator_list = paginator.get_page(page_number)
-    context = {
-        'departments_paginator_list': departments_paginator_list
-    }
-    return render(request, "employees/tree.html", context)
+    context = {"departments": departments_paginator_list}
+    return render(
+        request,
+        "employees/tree.html",
+        context
+    )
